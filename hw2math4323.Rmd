@@ -1,0 +1,89 @@
+---
+title: "hw2math4323"
+author: "anthonycastillo ID:1670011"
+date: "2022-09-19"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Question 1
+
+Question 3 (a):\
+```{r}
+library("mlbench")
+library("ggplot2")
+data("Ionosphere")
+summary(Ionosphere)
+#par(mfrow=c(2,2))
+plot(Ionosphere$Class)
+#plot(Ionosphere)
+#pairs(Ionosphere)
+```
+Question 3 (b):\
+```{r}
+newIonosphere <- Ionosphere[,-2]
+library(class)
+y.class <- newIonosphere$Class
+q3.train <- newIonosphere[,-34]
+q3.test <- newIonosphere[,-34]
+
+q3.knn <- knn(train = q3.train, test = q3.test, cl=y.class, k=1)
+summary(q3.knn)
+mean(q3.knn != y.class)
+```
+Question 3 (c):\
+```{r}
+table(q3.knn, y.class)
+```
+
+Question 3 (d):\
+```{r}
+n <- nrow(newIonosphere)
+set.seed(4323)
+seventypercent <- 0.7*n
+split <- sample(1:n, seventypercent)
+x.train <- newIonosphere[split,-34]
+x.test <- newIonosphere[-split,-34]
+y.train <- newIonosphere$Class[split]
+y.test <- newIonosphere$Class[-split]
+
+set.seed(4323)
+knn.pred <- knn(train = x.train, test = x.test, cl = y.train, k=3)
+#mean(knn.pred != y.test)
+table(knn.pred, y.test)
+```
+Question 3 (e):\
+```{r}
+set.seed(4323)
+knn.pred <- knn(train = x.train, test = x.test, cl = y.train, k=5)
+#mean(knn.pred != y.test)
+table(knn.pred, y.test)
+```
+Question 3 (f):\
+```{r}
+set.seed(4323)
+knn.pred <- knn(train = x.train, test = x.test, cl = y.train, k=7)
+#mean(knn.pred != y.test)
+table(knn.pred, y.test)
+
+```
+
+Question 3 (g):\
+The best result is k=5\
+
+Question 4 (a):\
+```{r}
+library(ISLR)
+auto.med <- median(Auto$mpg)
+mpg01 <- ifelse(Auto$mpg > auto.med, yes = 1, no = 0)
+mpg01
+```
+
+
+
+
+
+

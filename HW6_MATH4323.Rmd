@@ -1,0 +1,163 @@
+---
+title: "HW6-MATH4323"
+author: "anthonycastillo ID:1670011"
+date: "2022-11-09"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Question 1 (a):\
+```{r}
+dm <- as.dist(matrix(c(0,0.4,0.75,0.3,
+               0.4,0,0.5,0.8,
+               0.75,0.5,0,0.45,
+               0.3,0.8,0.45,0), nrow = 4))
+hc.complete <- hclust(dm,
+                      method = "complete")
+plot(hc.complete,
+     main = "Complete Linkage")
+```
+
+Question 1 (b):\
+```{r}
+hc.single <- hclust(dm,
+                    method = "single")
+plot(hc.single,
+     main = "Single Linkage")
+```
+
+Question 1 (c):\
+```{r}
+hc.compcut <- cutree(hc.complete, k=2)
+hc.compcut
+```
+Question 1 (d):\
+```{r}
+hc.singlecut <- cutree(hc.single, k=2)
+hc.singlecut
+```
+Question 1 (e):\
+```{r}
+plot(hc.complete,
+     main = "Complete Linkage",
+     label = c(4,3,2,1))
+```
+
+Question 2 (a):\
+```{r}
+x <- matrix(c(-0.6,-1,
+              0.05,-1.1,
+              -1.5,-0.4,
+              -1.4,-1.55,
+              1.3,-0.3,
+              -0.9,-1.2,
+              1.4,0,
+              0.65,-0.25,
+             -0.1,0.9),
+           ncol=2,
+           byrow=T)
+lol <- dist(x)
+ligma <- as.matrix(lol)
+for(i in 1:9){
+  num <- (min(ligma[i,5],ligma[i,7]))
+  print(round(num,2))
+}
+```
+
+Question 2 (b):\
+```{r}
+lol <- dist(x)
+ligma <- as.matrix(lol)
+for(i in 1:9){
+  num <- (mean(ligma[i,5],ligma[i,7]))
+  print(round(num,2))
+}
+```
+
+Question 3 (a):\
+The complete linkage dendogram will most of the time be higher on the tree since it uses maximum intercluster dissimilarity but there can be cases where the maximum intercluster dissimilarity and minimum intercluster dissimilarity could be the same distance and complete linkage and single linkage would fuse at the same height\
+Question 3 (b):\
+The fusion will occur at the same height since it is two single elements they always fuse at the same height
+no matter the type of linkage\
+
+
+Question 4 (a):\
+```{r}
+us.hclust <- hclust(dist(USArrests),
+                    method = "complete")
+plot(us.hclust)
+```
+
+Question 4 (b):\
+```{r}
+us.cutree <- cutree(us.hclust, k=3)
+table(us.cutree)
+us.cutree
+```
+
+Question 4 (c):\
+```{r}
+us.scale <-scale(USArrests)
+us.hclust <- hclust(dist(us.scale),
+                    method = "complete")
+plot(us.hclust)
+```
+
+Question 4 (d):\
+```{r}
+library(factoextra)
+hc.out <- eclust(USArrests,
+                 FUNcluster = "hclust",
+                 hc_method = "complete")
+fviz_nbclust(USArrests,hcut,
+             hc_method = "complete")
+optimal.k <- cutree(us.hclust, k = 2)
+```
+The optimal k values seems to be k=2\
+
+Question 4 (e):\
+```{r}
+table(optimal.k)
+optimal.k
+plot(us.hclust)
+rect.hclust(us.hclust, k=2,border = 2:3)
+plot(USArrests, col = optimal.k+1,
+     pch = 19, cex = 1)
+```
+
+Cluster 2 contains states with low urban pops and more high counts of rape,assault,and murder\
+Cluster 1 contains states with high urban population and low counts of rape,assault, and murder\
+
+Question 4 (f):\
+The variables for the data has 2data types which are numeric and integer so yes scaling could help\
+
+Question 5 (a):\
+```{r}
+data <- read.csv("D:/fall22/math4323/Ch10Ex11.csv",header = F)
+temp <- t(data)
+temp <- data.frame(temp)
+```
+Question 5 (b):\
+```{r}
+#complete linkage
+hc.completeData <- hclust(dist(temp),
+                          method = "complete")
+plot(hc.completeData,
+     main = "Complete Linkage")
+#single linkage
+hc.singleData <- hclust(dist(temp),
+                        method = "single")
+plot(hc.singleData,
+     main = "Single Linkage")
+#average linkage
+hc.averageData <- hclust(dist(temp),
+                         method = "average")
+plot(hc.averageData,
+     main = "Average Linkage")
+```
+
+Yes the genes separate into two main clusters for all linkages\

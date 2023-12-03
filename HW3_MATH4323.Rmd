@@ -1,0 +1,338 @@
+---
+title: "HW3-MATH4323"
+author: "anthonycastillo ID:1670011"
+date: "2022-10-03"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Question 1 (a):\
+
+```{r}
+x1 <- -10:10
+x2 <- x1
+plot(x1,x2, col = "purple",type = "l")
+points(1,1, pch = 19, col = "blue")
+points(0,-1,pch = 19,col = "blue")
+points(0,1, pch = 19,col = "red")
+text(-2,5,"X_1 - X_2 < 0", col = "red")
+text(5,-2,"X_1 - X_2 > 0", col = "blue")
+```
+
+Question 1 (b):\
+
+```{r}
+x1 <- -10:10
+x2 <- -x1
+plot(x1,x2, type = "l", col = "magenta")
+points(1,1, pch = 19, col = "red")
+points(-1,-1,pch = 19,col = "blue")
+points(1,-1, pch = 19,col = "blue")
+text(-4,-2,"X_1 + X_2 < 0", col = "blue")
+text(4,2,"X_1 + X_2 > 0", col = "red")
+```
+
+Question 2 (a):\
+
+```{r}
+plot(NA, NA, type = "n", xlim = c(-2, -1), ylim = c(-2, 6), asp = 1, xlab = "X1", ylab = "X2")
+symbols(c(-1), c(2), circles = c(2), add = TRUE, inches = FALSE)
+symbols(c(-1), c(2), circles = c(4), add = TRUE, inches = FALSE)
+```
+
+Question 2 (b):\
+```{r}
+plot(NA, NA, type = "n", xlim = c(-2, -1), ylim = c(-2, 6), asp = 1, xlab = "X1", ylab = "X2")
+symbols(c(-1), c(2), circles = c(2), add = TRUE, inches = FALSE)
+symbols(c(-1), c(2), circles = c(4), add = TRUE, inches = FALSE)
+text(4,2,">16", col = "red")
+text(-1,2,"<4", col = "red")
+text(1,4,"16<= , >=4", col = "blue")
+```
+
+Question 2 (c):\
+```{r}
+plot(NA, NA, type = "n", xlim = c(-2, -1), ylim = c(-2, 6), asp = 1, xlab = "X1", ylab = "X2")
+symbols(c(-1), c(2), circles = c(2), add = TRUE, inches = FALSE)
+symbols(c(-1), c(2), circles = c(4), add = TRUE, inches = FALSE)
+text(4,2,">16", col = "red")
+text(-1,2,"<4", col = "red")
+text(1,4,"16<= , >=4", col = "blue")
+points(0,0,pch=19,col = "blue")
+points(-1,1,pch=19,col = "red")
+points(2,2,pch=19,col = "blue")
+points(3,4,pch=19,col = "red")
+
+```
+
+Question 2 (d):\
+$(1+X_{1})^2+(2-X_{2})^2=4$ is linear by expanding it  $1+X_{1}+X_{1}^2+X_{2}+X_{2}^2=0$
+
+
+
+Question 3 (a):\
+```{r}
+x1 <- c(1,3,4,2,4,4,1,1)
+x2 <- c(4,4,3,2,2,4,2,3)
+plot.color <- c("blue","red","red","blue","red","red","blue","blue")
+plot(x1,x2, col = plot.color, xlim = c(0,5), ylim = c(0,5), pch = 19)
+```
+
+Question 3 (b):\
+
+```{r}
+plot(x1,x2, col = plot.color, xlim = c(0,5), ylim = c(0,5), pch = 19)
+abline(8,-2)
+```
+
+equation for hyperplane: x1+x2+8 = 0\
+Question 3 (c):\
+classify to blue if x1+x2+1 < 0 and classify to red if x1+x2+1 > 0\
+Question 3 (d):\
+```{r}
+plot(x1,x2, col = plot.color, xlim = c(0,5), ylim = c(0,5), pch = 19)
+abline(8,-2)
+abline(6.0,-2.0, lty = 2)
+abline(10.0,-2.0, lty = 2)
+```
+
+Question 3 (e):\
+The support vectors are (2,2),(1,4),(4,2),and (3,4)\
+Question 3 (f):\
+The 7th obs is (1,2) which is not a support vector which will not change the maximal margin hyperplane\
+Question 3 (g):\
+```{r}
+plot(x1,x2, col = plot.color, xlim = c(0,5), ylim = c(0,5), pch = 19)
+abline(7,-2)
+```
+
+equation for hyperplane: x1+x2+7 = 0\
+Question 3 (h):\
+```{r}
+plot(x1,x2, col = plot.color, xlim = c(0,5), ylim = c(0,5), pch = 19)
+abline(8,-2)
+abline(6.0,-2.0, lty = 2)
+abline(10.0,-2.0, lty = 2)
+points(4,5, pch = 19, col = "blue")
+```
+Question 4 (a):\
+
+```{r}
+library(MASS)
+library(ISLR)
+library(class)
+library(caret)
+
+newBoston <- data.frame(Boston)
+medv.med <- median(Boston$medv)
+newBoston$medv01 <- ifelse(Boston$medv > medv.med, yes = 1, no = 0)
+newBoston$medv = NULL
+
+```
+
+Question 4 (b):\
+
+```{r}
+cor(newBoston)
+par(mfrow=c(2,3))
+boxplot(newBoston$crim~newBoston$medv01)
+boxplot(newBoston$zn~newBoston$medv01)
+boxplot(newBoston$indus~newBoston$medv01)
+boxplot(newBoston$chas~newBoston$medv01)
+boxplot(newBoston$nox~newBoston$medv01)
+boxplot(newBoston$rm~newBoston$medv01)
+boxplot(newBoston$age~newBoston$medv01)
+boxplot(newBoston$dis~newBoston$medv01)
+boxplot(newBoston$rad~newBoston$medv01)
+boxplot(newBoston$tax~newBoston$medv01)
+boxplot(newBoston$ptratio~newBoston$medv01)
+boxplot(newBoston$black~newBoston$medv01)
+boxplot(newBoston$lstat~newBoston$medv01)
+```
+
+I will use the k-values 1,5,10\
+my three subset predictors will be all predictors,(nox, ptratio, lstat), and (tax,age,rm)\
+Question 4 (c):\
+#LOOCV\
+```{r}
+set.seed(1)
+n <-nrow(newBoston)
+boston.train <- cbind(newBoston$nox,
+                      newBoston$ptratio,
+                      newBoston$lstat)
+boston.y.train <- newBoston$medv01
+
+set.seed(1)
+for(i in c(1,5,10)){
+  boston.knn.cv <- knn.cv(train = boston.train,cl = boston.y.train,k=i)
+  print(mean(boston.knn.cv != boston.y.train))
+}
+
+```
+```{r}
+set.seed(1)
+n <-nrow(newBoston)
+boston.train <- newBoston[,-14]
+boston.y.train <- newBoston[,"medv01"]
+
+set.seed(1)
+for(i in c(1,5,10)){
+  boston.knn.cv <- knn.cv(train = boston.train,cl = boston.y.train,k=i)
+  print(mean(boston.knn.cv != boston.y.train))
+}
+
+```
+```{r}
+set.seed(1)
+n <-nrow(newBoston)
+boston.train <- cbind(newBoston$tax,
+                      newBoston$age,
+                      newBoston$rm)
+boston.y.train <- newBoston$medv01
+
+set.seed(1)
+for(i in c(1,5,10)){
+  boston.knn.cv <- knn.cv(train = boston.train,cl = boston.y.train,k=i)
+  print(mean(boston.knn.cv != boston.y.train))
+}
+```
+
+The model with the predictor nox,ptratio, and lstat and k-value = 5 had the best results of all the models\
+Question 4 (d):\
+The variable in the Boston data set are not in the same scale. You can divide the data into training and test set and scale them\
+Question 4 (e):\
+```{r}
+set.seed(1)
+n <-nrow(newBoston)
+boston.train <- scale(cbind(newBoston$nox,
+                      newBoston$ptratio,
+                      newBoston$lstat))
+boston.y.train <- newBoston$medv01
+
+set.seed(1)
+for(i in c(1,5,10)){
+  boston.knn.cv <- knn.cv(train = boston.train,cl = boston.y.train,k=i)
+  print(mean(boston.knn.cv != boston.y.train))
+}
+```
+
+
+```{r}
+set.seed(1)
+n <-nrow(newBoston)
+boston.train <- scale(newBoston[,-14])
+boston.y.train <- newBoston[,"medv01"]
+
+set.seed(1)
+for(i in c(1,5,10)){
+  boston.knn.cv <- knn.cv(train = boston.train,cl = boston.y.train,k=i)
+  print(mean(boston.knn.cv != boston.y.train))
+}
+
+```
+
+```{r}
+set.seed(1)
+n <-nrow(newBoston)
+boston.train <- scale(cbind(newBoston$tax,
+                      newBoston$age,
+                      newBoston$rm))
+boston.y.train <- newBoston$medv01
+
+set.seed(1)
+for(i in c(1,5,10)){
+  boston.knn.cv <- knn.cv(train = boston.train,cl = boston.y.train,k=i)
+  print(mean(boston.knn.cv != boston.y.train))
+}
+```
+The test error rate were lower for all the predictor subsets and k-values\
+Question 5 (a):\
+
+```{r}
+library(e1071)
+mpg.median <- median(Auto$mpg)
+newAuto <- data.frame(Auto)
+newAuto$mpg01 <- ifelse(newAuto$mpg > mpg.median,1,0)
+newAuto$mpg01 = as.factor(newAuto$mpg01)
+newAuto$mpg = NULL
+```
+
+Question 5 (b):\
+
+```{r}
+set.seed(1)
+auto.tune <- tune(method = svm,
+                  mpg01~., data = newAuto,
+                  kernel = "linear",
+                  ranges = list(cost=c(0.001,0.01,0.1,1,5,10,100)))
+summary(auto.tune)
+```
+
+Question 5 (c):\
+```{r}
+auto.svm <- svm(mpg01~., data = newAuto, kernel = "linear", cost = 0.1)
+ypred <- predict(auto.svm,newAuto)
+table(predict = ypred,truth = newAuto$mpg01)
+mean(ypred != newAuto$mpg01)
+```
+
+Question 5 (d):\
+```{r}
+plot(auto.svm,data = newAuto, displacement~cylinders)
+```
+
+Question 6 (a):\
+
+```{r}
+library(ISLR)
+set.seed(1)
+n<- nrow(OJ)
+oj.sample <- sample(1:n,800)
+oj.train <- OJ[oj.sample,]
+oj.test <- OJ[-oj.sample,]
+```
+
+Question 6 (b):\
+```{r}
+oj.svm <- svm(Purchase~.,
+              data = oj.train,
+              kernel = "linear",
+              cost = 0.01)
+summary(oj.svm)
+```
+There is 219 support vectors for class CH and 216 support vectors for class MM \
+Question 6 (c):\
+```{r}
+oj.train.pred <- predict(oj.svm,oj.train)
+oj.test.pred <- predict(oj.svm,oj.test)
+train.error <- mean(oj.train.pred != oj.train$Purchase)
+test.error <- mean(oj.test.pred != oj.test$Purchase)
+train.error
+test.error
+```
+Question 6 (d):\
+```{r}
+set.seed(1)
+oj.tune <- tune(method = svm,
+                Purchase~.,
+                data = oj.train,
+                kernel = "linear",
+                ranges = list(cost=c(0.001,0.01,0.1,1,5,10,100)))
+summary(oj.tune)
+```
+Question 6 (e):\
+```{r}
+oj.svm <- svm(Purchase~.,
+              data = oj.train,
+              kernel = "linear",
+              cost = 0.1)
+oj.train.pred <- predict(oj.svm,oj.train)
+oj.test.pred <- predict(oj.svm,oj.test)
+train.error <- mean(oj.train.pred != oj.train$Purchase)
+test.error <- mean(oj.test.pred != oj.test$Purchase)
+train.error
+test.error
+```

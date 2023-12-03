@@ -1,0 +1,192 @@
+---
+title: "hw1math4323"
+author: "anthonycastillo   UH ID: 1670011"
+date: "2022-09-03"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, echo=FALSE}
+Credit <- read.csv("C:/Users/casti/Downloads/Credit.csv", stringsAsFactors=TRUE)
+```
+
+Question 1a:
+
+classification -> prediction n=20 p=14
+
+Question 1b:
+
+regression->inference n=200 p=15
+
+Question 1c:
+
+regression->inference n = 1500 p=10
+Question 1d:
+
+classification->prediction n = 300 p =8
+
+Question 2a:
+
+supervised learning
+
+Question 2b:
+
+i. for example (a) and (d) f_hat can be treated as a black box. The other examples (b) and (c) they can not be treated as a black box.
+
+ii.for inference examples we need to know the exact form of f_hat. The predication example we can use the treat as black box because the form of f_hat is not very important as long the prediction is accurate.
+
+
+Question 2c:
+
+reducible and irreducible errors. The reducible error can be improved using a better statistical learning technique. The irreducible error can not be improved because we can not avoid randoms errors in the model.
+
+
+Question 3:
+
+example 1: streaming services trying to group similar tv show/movies that the consumer has watched
+
+example 2: selling a product that targets a specific audience like video games
+
+example 3: in sports you can group together many differnet statistics to help the team win/lose the game 
+
+Question 4a:
+
+Use RStudio’s drop-down menu (Environment → Import Dataset → From Text (base) ...)
+to read the data into R. Make sure the Heading is set to Y es. Call the loaded
+data Credit.
+
+
+Question 4b-1:
+```{r}
+summary(Credit)
+```
+
+Question 4b-2:
+numerical values - Income, Limit, Rating, Cards, Age, Education, Balance
+ 
+categorical values - Own, Student, Married, Region
+ 
+Question 4b-3:
+```{r}
+pairs(~Income+Limit+Rating+Cards+Age+Education+Balance, Credit)
+```
+
+
+Question 4b-4:
+```{r}
+plot(Credit$Student,Credit$Balance)
+```
+ 
+ 
+ Question 4b-5:
+```{r}
+high=(Credit$Rating>680)
+table(high)
+#plot(Credit$Balance,Credit$high)
+```
+ 
+ 
+ Question 4b-6:
+```{r}
+par(mfrow = c(2,2))
+hist(Credit$Income)
+hist(Credit$Age)
+hist(Credit$Balance)
+hist(Credit$Rating)
+```
+ 
+ 
+ Question 5a:
+ 
+```{r}
+library(MASS)
+#Boston
+?Boston
+```
+ 
+ 506 rows and 14 columns. 
+ lstat - lower status of the population
+ ptratio - pupil-teacher ratio by town
+ chas - if bounded by charles river or not
+ medv - median value of owner-occupied homes in $1000s
+ 
+ Question 5b:
+ 
+ most of the predictors are quantitative variables
+ 
+ Question 5c:
+ 
+```{r}
+Boston_range = sapply(Boston,range)
+rownames(Boston_range) = c("min:","max:")
+Boston_range
+```
+ 
+ 
+ Question 5d:
+```{r}
+Boston_mean_sd = sapply(Boston, function(x) c(mean(x),sd(x)))
+rownames(Boston_mean_sd) = c("mean:","sd:")
+Boston_mean_sd
+```
+ 
+ Question 5e:
+ 
+```{r}
+newBoston = Boston[-c(50:100),]
+NB_range_mean_sd = sapply(newBoston, function(x) round(c(range(x),mean(x),sd(x)),digits=1))
+#format(round(NB_range_mean_sd,digits = 4),nsmall = 4)
+rownames(NB_range_mean_sd) = c("min:","max:","mean:", "sd:")
+NB_range_mean_sd
+```
+ 
+ Question 5f:
+ 
+```{r}
+#pairs(Boston)
+par(mfrow=c(2,2))
+plot(Boston$medv,Boston$crim)
+plot(Boston$age,Boston$crim)
+plot(Boston$lstat,Boston$crim)
+plot(Boston$zn,Boston$crim)
+
+```
+ crim and medv - as medv increases the crim rate decreases.
+ 
+ crim and lstat - as lstat increases there is somewhat of an increase in crime rates.
+ 
+ crim and age - as age increase the crim rate also increases.
+ 
+ crim and zn - 0 zn have higher crim rate than the rest of the plot.
+ 
+ 
+ Question 5g:
+```{r}
+par(mfrow=c(2,2))
+hist(Boston$crim)
+hist(Boston$tax)
+hist(Boston$ptratio)
+```
+ 
+ 
+ Question 5h:
+```{r}
+nrow(subset(Boston,chas ==1))
+```
+ 
+ 
+ 
+ Question 5i:
+ 
+```{r}
+#pairs(Boston)
+par(mfrow=c(2,2))
+plot(Boston$crim, Boston$medv)
+plot(Boston$lstat, Boston$medv)
+plot(Boston$black, Boston$medv)
+plot(Boston$rm, Boston$medv)
+```
+ 
+ 

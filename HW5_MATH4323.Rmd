@@ -1,0 +1,284 @@
+---
+title: "HW5-MATH4323"
+author: "anthonycastillo ID:1670011"
+date: "2022-11-01"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Question 1 (a):\
+```{r}
+x1 <- c(1,2,3,6,6,7)
+x2 <- c(4,2,3,2,1,0)
+plot(x1,x2, xlab = "x1", ylab = "x2", pch = 19, col = "blue")
+```
+
+Question 1 (b):\
+```{r}
+RNGkind(sample.kind = "default")
+set.seed(2)
+labels <- sample(2,6, replace = T)
+labels
+plot(x1,x2, pch = 19, col = labels ,xlab = "x1",ylab = "x2")
+```
+
+Question 1 (c):\
+```{r}
+cluster1x <- sum(x1[1:2])/2
+cluster1y <- sum(x2[1:2])/2
+cluster2x <- sum(x1[3:6])/4
+cluster2y <- sum(x2[3:6])/4
+```
+Question 1 (d):\
+```{r}
+clusterassign <- c(1,1,1,2,2,2)
+plot(x1,x2, pch = 19, col = clusterassign,xlab = "x1",ylab = "x2")
+points(cluster1x,cluster1y, col = 1, pch = 4)
+points(cluster2x,cluster2y, col = 2, pch = 4)
+```
+
+assign centroid (1.5,3) to cluster 1\
+assign centroid (5.5,1.5) to cluster 2\
+Question 1 (e):\
+```{r}
+up.cluster1x <- sum(x1[1:3])/3
+up.cluster1y <- sum(x2[1:3])/3
+up.cluster2x <- sum(x1[4:6])/3
+up.cluster2y <- sum(x2[4:6])/3
+```
+The observations stayed the same after one iteration \
+
+Question 1 (f):\
+```{r}
+clusterlabel <- c(1,1,1,2,2,2)
+plot(x1,x2, pch = 19, col = clusterlabel, xlab = "x1",ylab = "x2")
+points(up.cluster1x,up.cluster1y, col = 1, pch = 4)
+points(up.cluster2x,up.cluster2y, col = 2, pch = 4)
+```
+
+Question 2 (a):\
+```{r}
+library(MASS)
+newBoston <- Boston[,-4]
+```
+Question 2 (b):\
+```{r}
+newBoston <- newBoston[,-13]
+```
+Question 2 (c):\
+```{r}
+boston.pca <- prcomp(newBoston, scale = TRUE)
+#summary(boston.pca)
+boston.pca$sdev
+```
+Question 2 (d):\
+```{r}
+boston.var <- boston.pca$sdev^2
+print(boston.var)
+```
+Question 2 (e):\
+
+Question 3 (a):\
+```{r}
+set.seed(1)
+x<- matrix(rnorm(4*5*2),ncol=2)
+
+#split in 5 clusters
+x[1:4,2] <- x[1:4,2]+6
+x[5:8,1] <- x[5:8,1]+9
+x[9:12,1] <- x[9:12,1]-5
+x[13:16,2] <- x[13:16,2]-5
+scale(x)
+plot(x, pch=19, main = "Simulated Data",
+     ylab = "x2", xlab = "x1")
+```
+
+Question 3 (b):\
+```{r}
+x <- data.frame(x)
+library(factoextra)
+sim.wss <- numeric(6)
+for(i in 4:6){
+  sim.wss[i] <- eclust(x,
+                    FUNcluster = "kmeans",
+                    k=i,
+                    nstart=50,
+                    graph = 0)$tot.withinss
+}
+print(sim.wss[4:6])
+```
+
+going from k=4 to k=5 had a bigger drop in total WSS\
+Question 3 (c):\
+```{r}
+for(i in 4:6){
+  eclust(x,FUNcluster = "kmeans",
+         k=i,
+         nstart = 50)
+}
+```
+
+The clusters got smaller when increasing the K-value meaning the total distance between each value in each cluster got smaller\
+Question 3 (d):\
+```{r}
+k.max <- 10
+sim.wss <- numeric(k.max)
+for(i in 1:k.max){
+  sim.wss[i] <- eclust(x,
+                       FUNcluster = "kmeans",
+                       k = i,
+                       nstart = 50,
+                       graph = 0)$tot.withinss
+}
+plot(sim.wss, pch = 20, type = "b",
+     main = "WSS for k=1....10",
+     ylab = "Total WSS",
+     xlab = "number of clusters K")
+```
+
+The optimal k value seems to be k=5\
+Question 3 (e):\
+```{r}
+sim.gap <- fviz_nbclust(x,
+                        kmeans,
+                        nstart = 50,
+                        nboot = 50,
+                        method = "gap_stat")
+plot(sim.gap)
+```
+
+The optimal k values is 5 which also match the number of separated clusters in the simulated data\
+Question 4 (a):\
+```{r}
+newIris <- iris[-5]
+k.max <- 10
+iris.wss <- numeric(k.max)
+for(i in 1:k.max){
+  iris.wss[i] <- eclust(newIris,
+                        FUNcluster = "kmeans",
+                        k = i,
+                        nstart = 50,
+                        graph = 0)$tot.withinss
+}
+print(iris.wss)
+plot(iris.wss, pch = 19, type = "b",
+     main = "WSS for k=1....10",
+     ylab = "Total WSS",
+     xlab = "number of clusters K")
+```
+
+Question 4 (b):\
+```{r}
+iris.gap <- fviz_nbclust(newIris,
+                         kmeans,
+                         nstart = 50,
+                         nboot = 50,
+                         method = "gap_stat")
+plot(iris.gap)
+```
+
+The optimal K value seems to be k=6\
+Question 4 (c):\
+```{r}
+iris.clust <- eclust(newIris,
+                       FUNcluster = "kmeans",
+                       nstart = 50,
+                      nboot  = 50,
+                       graph = 0)
+table(iris$Species[iris.clust$cluster == 6])
+table(iris$Species[iris.clust$cluster == 5])
+table(iris$Species[iris.clust$cluster == 4])
+table(iris$Species[iris.clust$cluster == 3])
+table(iris$Species[iris.clust$cluster == 2])
+table(iris$Species[iris.clust$cluster == 1])
+```
+Question 4 (d):\
+```{r}
+scale(newIris)
+iris.gap <- fviz_nbclust(newIris,
+                         kmeans,
+                         nstart = 50,
+                         nboot = 50,
+                         method = "gap_stat")
+plot(iris.gap)
+```
+Question 4 (e):\
+```{r}
+iris.clust <- eclust(newIris,
+                       FUNcluster = "kmeans",
+                       nstart = 50,
+                      nboot  = 50,
+                       graph = 0)
+table(iris$Species[iris.clust$cluster == 6])
+table(iris$Species[iris.clust$cluster == 5])
+table(iris$Species[iris.clust$cluster == 4])
+table(iris$Species[iris.clust$cluster == 3])
+table(iris$Species[iris.clust$cluster == 2])
+table(iris$Species[iris.clust$cluster == 1])
+```
+Question 4 (f):\
+```{r}
+iris.optimal <- eclust(newIris,
+                       FUNcluster = "kmeans",
+                       k = 6,
+                       nstart = 50)
+```
+Question 5 (a):\
+```{r}
+temp <- read.csv("E:/fall22/math4323/Ch10Ex11.csv", header = F)
+data<-t(temp)
+data <- data.frame(data)
+```
+Question 5 (b):\
+```{r}
+library(factoextra)
+k.max <- 10
+wss <- numeric(k.max)
+for(i in 1:k.max){
+  wss[i] <- eclust(data,
+                  FUNcluster = "kmeans",
+                  k=i,
+                  nstart=50,
+                  graph = 0)$tot.withinss
+}
+plot(wss, type = "b",
+     pch = 19, col = "blue",
+     main = "total within-cluster sum of squares for K=1-10",
+     xlab = "Number of Clusters K",
+     ylab = "Total WSS")
+```
+
+Yes there is an elbow at K=2\
+Question 5 (c):\
+```{r}
+data.gap <- fviz_nbclust(data,
+                         kmeans,
+                         nstart = 50,
+                         nboot = 20,
+                         method = "gap_stat")
+plot(data.gap)
+```
+
+The optimal k value is k=2\
+Question 5 (d):\
+```{r}
+data.optimal <- eclust(data,
+                       FUNcluster = "kmeans",
+                       nboot = 20,
+                       nstart = 50)
+table(temp[1,data.optimal$cluster==2])
+table(temp[1,data.optimal$cluster==1])
+```
+Yes the answer is close to part c\
+Question 5 (e):\
+```{r}
+data.optimal <- eclust(data,
+                       FUNcluster = "kmeans",
+                       k=2,
+                       nstart = 50)
+```
+
+Yes one cluster only contain healthy and the other contains the diseased group\
